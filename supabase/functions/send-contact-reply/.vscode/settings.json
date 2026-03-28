@@ -1,0 +1,6 @@
+{
+  "deno.enable": true,
+  "deno.unstable": true,
+  "typescript.enablePromptUseWorkspaceTsdk": false,
+  "editor.defaultFormatter": "denoland.vscode-deno"
+}

@@ -1,0 +1,3 @@
+# تنظیمات Edge Functions
+[functions.send-contact-reply]
+verify_jwt = false
