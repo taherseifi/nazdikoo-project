@@ -14,6 +14,7 @@ import {
 import { getSeoEntry } from '../services/supabase/seo.api'
 import { buildSeoPayload } from '../utils/seo/buildSeoPayload'
 import { getCanonicalUrl } from '../utils/seo/getCanonicalUrl'
+
 import {
   getBlogById,
   getBlogBySlug,
@@ -207,17 +208,6 @@ const breadcrumbSchema = useMemo(() => {
     <Layout>
       {seo ? (
         <>
-        <Helmet>
-  <title>{blogTitle} | مجله تخصصی نزدیکو</title>
-  <meta name="description" content={blogSummary} />
-  <meta name="keywords" content={`${blogTags}, نزدیکو، استانبول، راهنمای ترکیه`} />
-  <link rel="canonical" href={`https://nazdikoo.com/blogs/${blogSlug}`} />
-  
-  <meta property="og:title" content={blogTitle} />
-  <meta property="og:description" content={blogSummary} />
-  <meta property="og:type" content="article" />
-  <meta property="og:image" content={blogThumbnailUrl} />
-</Helmet>
           <Seo
             title={seo.title}
             description={seo.description}
