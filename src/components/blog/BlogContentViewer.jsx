@@ -11,6 +11,7 @@ import TableCell from '@tiptap/extension-table-cell'
 import { TextStyle, FontSize } from '@tiptap/extension-text-style'
 import MapBlock from '../editor/extensions/MapBlock'
 
+
 const CustomImage = Image.extend({
   addAttributes() {
     return {

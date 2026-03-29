@@ -236,17 +236,16 @@ export default function RichTextEditor({ value, onChange }) {
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }
 
- async function addImage() {
+async function addImage() {
   const input = document.createElement('input')
   input.type = 'file'
   input.accept = 'image/*'
 
-  input.onchange = async () => {
+  input.addEventListener('change', async () => {
     const file = input.files?.[0]
     if (!file) return
 
     try {
-      // می‌تونی اینجا لودینگ هم بزاری بعداً
       const url = await uploadEditorImageToHost(file)
 
       editor
@@ -254,17 +253,17 @@ export default function RichTextEditor({ value, onChange }) {
         .focus()
         .setImage({
           src: url,
-          alt: file.name,
+          alt: file.name || 'image',
           width: '100%',
           align: 'center',
           radius: '16px',
         })
         .run()
-    } catch (err) {
-      console.error(err)
-      alert('آپلود عکس انجام نشد')
+    } catch (error) {
+      console.error(error)
+      window.alert(error?.message || 'آپلود عکس انجام نشد')
     }
-  }
+  })
 
   input.click()
 }
