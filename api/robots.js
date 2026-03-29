@@ -5,7 +5,6 @@ export default function handler(req, res) {
 Allow: /
 
 Sitemap: ${SITE_URL}/sitemap.xml
-Host: ${SITE_URL}
 `
 
   res.setHeader('Content-Type', 'text/plain; charset=utf-8')

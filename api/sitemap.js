@@ -21,15 +21,19 @@ function normalizeDate(value) {
 function buildUrl(loc, options = {}) {
   const lastmod = normalizeDate(options.lastmod)
   const changefreq = options.changefreq || 'weekly'
-  const priority = typeof options.priority === 'number' ? options.priority.toFixed(1) : '0.7'
+  const priority =
+    typeof options.priority === 'number' ? options.priority.toFixed(1) : '0.7'
 
-  return `
-  <url>
-    <loc>${escapeXml(loc)}</loc>
-    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
-  </url>`
+  return [
+    '<url>',
+    `  <loc>${escapeXml(loc)}</loc>`,
+    lastmod ? `  <lastmod>${lastmod}</lastmod>` : '',
+    `  <changefreq>${changefreq}</changefreq>`,
+    `  <priority>${priority}</priority>`,
+    '</url>',
+  ]
+    .filter(Boolean)
+    .join('\n')
 }
 
 async function fetchSupabase(path) {
@@ -55,14 +59,22 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [
-      businesses,
-      blogs,
-      categories,
-      subcategories,
-    ] = await Promise.all([
+    const staticPages = [
+      { path: '/', priority: 1.0, changefreq: 'daily' },
+      { path: '/about', priority: 0.7, changefreq: 'monthly' },
+      { path: '/listings', priority: 0.8, changefreq: 'weekly' },
+      { path: '/blogs', priority: 0.8, changefreq: 'weekly' },
+      { path: '/faq', priority: 0.6, changefreq: 'monthly' },
+      { path: '/privacy-policy', priority: 0.3, changefreq: 'yearly' },
+      { path: '/contact-us', priority: 0.6, changefreq: 'monthly' },
+      { path: '/submit-business', priority: 0.6, changefreq: 'monthly' },
+      { path: '/guide-submit-business', priority: 0.5, changefreq: 'monthly' },
+      { path: '/nearby-services', priority: 0.6, changefreq: 'weekly' },
+    ]
+
+    const [businesses, blogs, categories] = await Promise.all([
       fetchSupabase(
-        'businesses?select=slug,updated_at,is_approved&slug=not.is.null&is_approved=eq.true'
+        'businesses?select=slug,created_at,is_approved&slug=not.is.null&is_approved=eq.true'
       ),
       fetchSupabase(
         'blogs?select=slug,updated_at,is_published&slug=not.is.null&is_published=eq.true'
@@ -70,26 +82,9 @@ export default async function handler(req, res) {
       fetchSupabase(
         'categories?select=slug,created_at&slug=not.is.null'
       ),
-      fetchSupabase(
-        'subcategories?select=slug,created_at&slug=not.is.null'
-      ),
     ])
 
     const urls = []
-
-    // صفحات ثابت
-    const staticPages = [
-      { path: '/', priority: 1.0, changefreq: 'daily' },
-      { path: '/about', priority: 0.7, changefreq: 'monthly' },
-      { path: '/blogs', priority: 0.8, changefreq: 'weekly' },
-      { path: '/faq', priority: 0.6, changefreq: 'monthly' },
-      { path: '/contact-us', priority: 0.6, changefreq: 'monthly' },
-      { path: '/listings', priority: 0.8, changefreq: 'weekly' },
-      { path: '/submit-business', priority: 0.6, changefreq: 'monthly' },
-      { path: '/guide-submit-business', priority: 0.5, changefreq: 'monthly' },
-      { path: '/nearby-services', priority: 0.6, changefreq: 'weekly' },
-      { path: '/privacy-policy', priority: 0.3, changefreq: 'yearly' },
-    ]
 
     for (const page of staticPages) {
       urls.push(
@@ -100,8 +95,9 @@ export default async function handler(req, res) {
       )
     }
 
-    // دسته‌بندی‌ها
     for (const item of categories) {
+      if (!item?.slug) continue
+
       urls.push(
         buildUrl(`${SITE_URL}/category/${item.slug}`, {
           lastmod: item.created_at,
@@ -111,32 +107,21 @@ export default async function handler(req, res) {
       )
     }
 
-    // زیردسته‌ها
-    for (const item of subcategories) {
-      urls.push(
-        buildUrl(`${SITE_URL}/subcategory/${item.slug}`, {
-          lastmod: item.created_at,
-          priority: 0.7,
-          changefreq: 'weekly',
-        })
-      )
-    }
-
-    // خدمات / کسب‌وکارها
-  
     for (const item of businesses) {
+      if (!item?.slug) continue
+
       urls.push(
         buildUrl(`${SITE_URL}/business/${item.slug}`, {
-          lastmod: item.updated_at,
+          lastmod: item.created_at,
           priority: 0.8,
           changefreq: 'weekly',
         })
       )
     }
 
-    // بلاگ‌ها
-
     for (const item of blogs) {
+      if (!item?.slug) continue
+
       urls.push(
         buildUrl(`${SITE_URL}/blogs/${item.slug}`, {
           lastmod: item.updated_at,
@@ -147,19 +132,17 @@ export default async function handler(req, res) {
     }
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
->
-  ${urls.join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
 </urlset>`
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8')
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400')
     return res.status(200).send(xml)
   } catch (error) {
-  console.error('Sitemap generation failed:', error)
-  return res.status(500).send(
-    `Failed to generate sitemap: ${error.message || String(error)}`
-  )
-}
+    console.error('Sitemap generation failed:', error)
+    return res
+      .status(500)
+      .send(`Failed to generate sitemap: ${error.message || String(error)}`)
+  }
 }
