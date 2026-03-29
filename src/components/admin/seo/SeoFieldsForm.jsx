@@ -7,7 +7,7 @@ export default function SeoFieldsForm({
 }) {
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
+      <section className="rounded-2xl border border-slate-500 bg-white p-5">
         <h3 className="mb-4 text-lg font-semibold text-slate-800">
           تنظیمات اصلی سئو
         </h3>
@@ -22,7 +22,7 @@ export default function SeoFieldsForm({
               name="meta_title"
               value={values.meta_title || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             />
             {errors.meta_title ? (
               <p className="mt-1 text-sm text-red-600">{errors.meta_title}</p>
@@ -38,7 +38,7 @@ export default function SeoFieldsForm({
               name="slug"
               value={values.slug || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             />
           </div>
 
@@ -51,7 +51,7 @@ export default function SeoFieldsForm({
               name="canonical_url"
               value={values.canonical_url || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             />
             {errors.canonical_url ? (
               <p className="mt-1 text-sm text-red-600">
@@ -69,7 +69,7 @@ export default function SeoFieldsForm({
               rows={4}
               value={values.meta_description || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             />
             {errors.meta_description ? (
               <p className="mt-1 text-sm text-red-600">
@@ -80,7 +80,7 @@ export default function SeoFieldsForm({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
+      <section className="rounded-2xl border border-slate-500 bg-white p-5">
         <h3 className="mb-4 text-lg font-semibold text-slate-800">
           Open Graph
         </h3>
@@ -95,7 +95,7 @@ export default function SeoFieldsForm({
               name="og_title"
               value={values.og_title || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             />
           </div>
 
@@ -108,7 +108,7 @@ export default function SeoFieldsForm({
               name="og_image"
               value={values.og_image || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             />
             {errors.og_image ? (
               <p className="mt-1 text-sm text-red-600">{errors.og_image}</p>
@@ -124,13 +124,13 @@ export default function SeoFieldsForm({
               rows={4}
               value={values.og_description || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             />
           </div>
         </div>
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
+      <section className="rounded-2xl border border-slate-500 bg-white p-5">
         <h3 className="mb-4 text-lg font-semibold text-slate-800">Robots</h3>
 
         <div className="flex flex-wrap gap-6">
@@ -156,7 +156,7 @@ export default function SeoFieldsForm({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
+      <section className="rounded-2xl border border-slate-500 bg-white p-5">
         <h3 className="mb-4 text-lg font-semibold text-slate-800">
           تنظیمات تکمیلی
         </h3>
@@ -171,7 +171,7 @@ export default function SeoFieldsForm({
               name="focus_keyword"
               value={values.focus_keyword || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             />
           </div>
 
@@ -183,7 +183,7 @@ export default function SeoFieldsForm({
               name="schema_type"
               value={values.schema_type || ''}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             >
               <option value="">انتخاب کنید</option>
               <option value="WebPage">WebPage</option>
@@ -203,7 +203,7 @@ export default function SeoFieldsForm({
             rows={10}
             value={schemaText}
             onChange={onJsonChange}
-            className="w-full rounded-xl border border-slate-200 px-4 py-3 font-mono text-sm outline-none focus:border-blue-500"
+            className="w-full rounded-xl border border-slate-500 px-4 py-3 font-mono text-sm outline-none focus:border-blue-500"
           />
           {errors.custom_schema_json ? (
             <p className="mt-1 text-sm text-red-600">

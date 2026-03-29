@@ -36,7 +36,7 @@ export default function AdminBlogCreate() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-5 bg-slate-500">
       <div className="rounded-3xl bg-white p-6 shadow-sm">
         <h1 className="text-2xl font-bold text-slate-900">ایجاد بلاگ جدید</h1>
         <p className="mt-2 text-sm text-slate-500">

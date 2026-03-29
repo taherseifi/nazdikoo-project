@@ -7,7 +7,6 @@ import PageHero from '../components/common/PageHero'
 import { getSeoEntry } from '../services/supabase/seo.api'
 import { buildSeoPayload } from '../utils/seo/buildSeoPayload'
 import { getCanonicalUrl } from '../utils/seo/getCanonicalUrl'
-import { Helmet } from 'react-helmet-async';
 import {
   getBusinessBySlug,
   getBusinesses,
@@ -110,12 +109,26 @@ function BusinessDetails() {
 
   const seo = useMemo(() => {
     if (!business) return null
+
+    const businessName = business.title || 'جزئیات کسب‌وکار'
+    const categoryName =
+      business.categories?.name || business.subcategories?.name || 'خدمات'
+    const locationName =
+      business.region || business.city || business.country || 'ترکیه'
+
+    const dynamicTitle = `${businessName} | ${categoryName} در ${locationName} | نزدیکو`
+
+    const dynamicDescription =
+      business.description?.trim()
+        ? business.description.trim().slice(0, 160)
+        : `مشاهده اطلاعات تماس، آدرس، تصاویر، موقعیت روی نقشه و نظرات کاربران درباره ${businessName} در ${locationName} در نزدیکو.`
+
     return buildSeoPayload({
       seoEntry,
       path: `/business/${business.slug}`,
       fallback: {
-        title: business.title,
-        description: business.description || 'مشاهده جزئیات این خدمت',
+        title: dynamicTitle,
+        description: dynamicDescription,
         image: business.image_url || business.cover_image || '',
       },
     })
@@ -211,17 +224,6 @@ function BusinessDetails() {
     <Layout>
       {seo ? (
         <>
-        <Helmet>
-  <title>{blogTitle} | مجله تخصصی نزدیکو</title>
-  <meta name="description" content={blogSummary} />
-  <meta name="keywords" content={`${blogTags}, نزدیکو، استانبول، راهنمای ترکیه`} />
-  <link rel="canonical" href={`https://nazdikoo.com/blogs/${blogSlug}`} />
-  
-  <meta property="og:title" content={blogTitle} />
-  <meta property="og:description" content={blogSummary} />
-  <meta property="og:type" content="article" />
-  <meta property="og:image" content={blogThumbnailUrl} />
-</Helmet>
           <Seo
             title={seo.title}
             description={seo.description}
@@ -231,7 +233,7 @@ function BusinessDetails() {
             ogTitle={seo.ogTitle}
             ogDescription={seo.ogDescription}
           />
-    
+
           <StructuredData data={seoEntry?.custom_schema_json || localBusinessSchema} />
           <JsonLd data={businessSchema} />
           <JsonLd data={breadcrumbSchema} />

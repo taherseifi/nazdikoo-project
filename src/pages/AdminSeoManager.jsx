@@ -345,7 +345,7 @@ export default function AdminSeoManager() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
+    <div className="grid bg-slate-400 p-5 grid-cols-1 gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
       <aside className="space-y-5">
         <div className="rounded-3xl bg-white p-5 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
@@ -360,7 +360,7 @@ export default function AdminSeoManager() {
             <select
               value={pageType}
               onChange={(e) => setPageType(e.target.value)}
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+              className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
             >
               <option value={SEO_PAGE_TYPES.STATIC_PAGE}>صفحات ثابت</option>
               <option value={SEO_PAGE_TYPES.BLOG}>بلاگ‌ها</option>
@@ -376,7 +376,7 @@ export default function AdminSeoManager() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="جستجو..."
-              className="w-full rounded-2xl border border-slate-200 py-3 pr-11 pl-4 outline-none focus:border-blue-500"
+              className="w-full rounded-2xl border border-slate-500 py-3 pr-11 pl-4 outline-none focus:border-blue-500"
             />
           </div>
         </div>
@@ -387,7 +387,7 @@ export default function AdminSeoManager() {
             <button
               type="button"
               onClick={() => fetchItems(pageType)}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-500 px-3 py-2 text-xs font-medium text-slate-700"
             >
               <RefreshCw className="h-3.5 w-3.5" />
               بروزرسانی
@@ -396,11 +396,11 @@ export default function AdminSeoManager() {
 
           <div className="max-h-[70vh] space-y-2 overflow-y-auto pr-1">
             {itemsLoading ? (
-              <div className="rounded-2xl border border-slate-200 p-4 text-sm text-slate-500">
+              <div className="rounded-2xl border border-slate-500 p-4 text-sm text-slate-500">
                 در حال دریافت آیتم‌ها...
               </div>
             ) : filteredItems.length === 0 ? (
-              <div className="rounded-2xl border border-slate-200 p-4 text-sm text-slate-500">
+              <div className="rounded-2xl border border-slate-500 p-4 text-sm text-slate-500">
                 موردی پیدا نشد
               </div>
             ) : (
@@ -416,7 +416,7 @@ export default function AdminSeoManager() {
                     className={`w-full rounded-2xl border p-4 text-right transition ${
                       isActive
                         ? 'border-blue-500 bg-blue-50'
-                        : 'border-slate-200 bg-white hover:border-slate-300'
+                        : 'border-slate-500 bg-white hover:border-slate-300'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -464,7 +464,7 @@ export default function AdminSeoManager() {
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-500 px-4 py-3 text-sm font-medium text-slate-700"
                 >
                   <RefreshCw className="h-4 w-4" />
                   بازنشانی
@@ -517,7 +517,7 @@ export default function AdminSeoManager() {
                 پیش‌نمایش گوگل
               </h3>
 
-              <div className="space-y-1 rounded-2xl border border-slate-200 p-4">
+              <div className="space-y-1 rounded-2xl border border-slate-500 p-4">
                 <div className="truncate text-xl text-blue-700">
                   {seoValues.meta_title || selectedItem.title || 'عنوان صفحه'}
                 </div>

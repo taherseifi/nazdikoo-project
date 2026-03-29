@@ -253,7 +253,7 @@ export default function BlogPostForm({
                     meta_title: prev.meta_title || next,
                   }))
                 }}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
               />
             </label>
 
@@ -268,7 +268,7 @@ export default function BlogPostForm({
                   setSlug(next)
                   setSeo((prev) => ({ ...prev, slug: next }))
                 }}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
               />
             </label>
 
@@ -280,7 +280,7 @@ export default function BlogPostForm({
                 name="focus_keyword"
                 value={seo.focus_keyword}
                 onChange={handleSeoChange}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
               />
             </label>
 
@@ -300,7 +300,7 @@ export default function BlogPostForm({
                     meta_description: prev.meta_description || next,
                   }))
                 }}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
               />
             </label>
 
@@ -312,7 +312,7 @@ export default function BlogPostForm({
                 type="file"
                 accept="image/*"
                 onChange={(e) => handleFeaturedImage(e.target.files?.[0])}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                className="w-full rounded-2xl border border-slate-500 px-4 py-3"
               />
               {thumbnailUploading && (
                 <div className="mt-2 text-sm text-slate-500">در حال آپلود...</div>
@@ -346,7 +346,7 @@ export default function BlogPostForm({
                   name="meta_title"
                   value={seo.meta_title}
                   onChange={handleSeoChange}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                  className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
                 />
               </label>
 
@@ -359,7 +359,7 @@ export default function BlogPostForm({
                   rows={4}
                   value={seo.meta_description}
                   onChange={handleSeoChange}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                  className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
                 />
               </label>
 
@@ -372,7 +372,7 @@ export default function BlogPostForm({
                   value={seo.canonical_url}
                   onChange={handleSeoChange}
                   placeholder="https://example.com/blog/post-slug"
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                  className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
                 />
               </label>
 
@@ -384,7 +384,7 @@ export default function BlogPostForm({
                   name="schema_type"
                   value={seo.schema_type}
                   onChange={handleSeoChange}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                  className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
                 >
                   <option value="">انتخاب کنید</option>
                   <option value="Article">Article</option>
@@ -394,7 +394,7 @@ export default function BlogPostForm({
               </label>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 p-4">
+            <div className="rounded-2xl border border-slate-500 p-4">
               <h4 className="mb-4 text-base font-semibold text-slate-800">
                 Open Graph
               </h4>
@@ -408,7 +408,7 @@ export default function BlogPostForm({
                     name="og_title"
                     value={seo.og_title}
                     onChange={handleSeoChange}
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                    className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
                   />
                 </label>
 
@@ -421,7 +421,7 @@ export default function BlogPostForm({
                     value={seo.og_image}
                     onChange={handleSeoChange}
                     placeholder="https://..."
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                    className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
                   />
                 </label>
 
@@ -434,13 +434,13 @@ export default function BlogPostForm({
                     rows={3}
                     value={seo.og_description}
                     onChange={handleSeoChange}
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-500"
+                    className="w-full rounded-2xl border border-slate-500 px-4 py-3 outline-none focus:border-blue-500"
                   />
                 </label>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 p-4">
+            <div className="rounded-2xl border border-slate-500 p-4">
               <h4 className="mb-4 text-base font-semibold text-slate-800">
                 Robots
               </h4>
@@ -468,7 +468,7 @@ export default function BlogPostForm({
               </div>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 p-4">
+            <div className="rounded-2xl border border-slate-500 p-4">
               <h4 className="mb-4 text-base font-semibold text-slate-800">
                 Custom Schema JSON
               </h4>
@@ -481,7 +481,7 @@ export default function BlogPostForm({
   "@context": "https://schema.org",
   "@type": "Article"
 }'
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 font-mono text-sm outline-none focus:border-blue-500"
+                className="w-full rounded-2xl border border-slate-500 px-4 py-3 font-mono text-sm outline-none focus:border-blue-500"
               />
 
               <p className="mt-2 text-xs text-slate-500">
@@ -489,7 +489,7 @@ export default function BlogPostForm({
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <div className="rounded-2xl border border-slate-500 bg-slate-50 p-4">
               <h4 className="mb-3 text-base font-semibold text-slate-800">
                 پیش‌نمایش گوگل
               </h4>
@@ -515,7 +515,7 @@ export default function BlogPostForm({
               type="button"
               disabled={loading}
               onClick={() => onSubmit(buildPayload(false))}
-              className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-5 py-3 text-sm font-medium text-slate-700 disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-2xl border border-slate-500 px-5 py-3 text-sm font-medium text-slate-700 disabled:opacity-60"
             >
               <Save className="h-4 w-4" />
               <span>Save Draft</span>
@@ -534,7 +534,7 @@ export default function BlogPostForm({
             <button
               type="button"
               onClick={() => setPreviewOpen((prev) => !prev)}
-              className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-5 py-3 text-sm font-medium text-slate-700"
+              className="inline-flex items-center gap-2 rounded-2xl border border-slate-500 px-5 py-3 text-sm font-medium text-slate-700"
             >
               <Eye className="h-4 w-4" />
               <span>{previewOpen ? 'بستن Preview' : 'Preview'}</span>

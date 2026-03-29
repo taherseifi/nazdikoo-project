@@ -6,6 +6,7 @@ import StructuredData from '../components/common/StructuredData'
 import { getSeoEntry } from '../services/supabase/seo.api'
 import { buildSeoPayload } from '../utils/seo/buildSeoPayload'
 import { getCanonicalUrl } from '../utils/seo/getCanonicalUrl'
+import { Helmet } from 'react-helmet-async';
 
 function About() {
   const [seoEntry, setSeoEntry] = useState(null)
