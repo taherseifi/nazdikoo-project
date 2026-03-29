@@ -8,6 +8,8 @@ import { getBusinesses, getFeaturedBusinesses } from '../services/supabase/busin
 import JsonLd from '../components/seo/JsonLd'
 import { buildFaqSchema } from '../utils/schema'
 import { getCanonicalUrl } from '../utils/seo/getCanonicalUrl'
+import { Helmet } from 'react-helmet-async';
+
 
 const faqItems = [
   {
@@ -64,6 +66,26 @@ function Faq() {
   return (
     <Layout>
       <JsonLd data={faqSchema} />
+      <Helmet>
+  <title>سوالات متداول | راهنمای استفاده از نزدیکو استانبول</title>
+  <meta 
+    name="description" 
+    content="پاسخ به تمامی سوالات شما درباره نحوه رزرو خدمات در استانبول، ثبت‌نام متخصصین، هزینه‌ها و امنیت در پلتفرم نزدیکو." 
+  />
+  <meta 
+    name="keywords" 
+    content="سوالات متداول نزدیکو، راهنمای خدمات در استانبول، پشتیبانی نزدیکو، رزرو متخصص در ترکیه" 
+  />
+  <link rel="canonical" href="https://nazdikoo.com/faq" />
+  
+  <meta property="og:title" content="سوالات متداول | راهنمای کامل نزدیکو" />
+  <meta 
+    property="og:description" 
+    content="هر آنچه باید درباره خدمات و فعالیت نزدیکو در استانبول بدانید، اینجا پاسخ داده شده است." 
+  />
+  <meta property="og:url" content="https://nazdikoo.com/faq" />
+  <meta name="robots" content="index, follow" />
+</Helmet>
       <Seo
         title="سوالات متداول | نزدیکو"
         description="پاسخ سوالات متداول کاربران نزدیکو درباره ثبت خدمات، تایید کسب‌وکار، آپلود تصاویر، اطلاعات تماس و نمایش صفحات خدمات."

@@ -7,6 +7,7 @@ import PageHero from '../components/common/PageHero'
 import { getSeoEntry } from '../services/supabase/seo.api'
 import { buildSeoPayload } from '../utils/seo/buildSeoPayload'
 import { getCanonicalUrl } from '../utils/seo/getCanonicalUrl'
+import { Helmet } from 'react-helmet-async';
 import {
   getBusinessBySlug,
   getBusinesses,
@@ -210,6 +211,17 @@ function BusinessDetails() {
     <Layout>
       {seo ? (
         <>
+        <Helmet>
+  <title>{blogTitle} | مجله تخصصی نزدیکو</title>
+  <meta name="description" content={blogSummary} />
+  <meta name="keywords" content={`${blogTags}, نزدیکو، استانبول، راهنمای ترکیه`} />
+  <link rel="canonical" href={`https://nazdikoo.com/blogs/${blogSlug}`} />
+  
+  <meta property="og:title" content={blogTitle} />
+  <meta property="og:description" content={blogSummary} />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content={blogThumbnailUrl} />
+</Helmet>
           <Seo
             title={seo.title}
             description={seo.description}
@@ -219,6 +231,7 @@ function BusinessDetails() {
             ogTitle={seo.ogTitle}
             ogDescription={seo.ogDescription}
           />
+    
           <StructuredData data={seoEntry?.custom_schema_json || localBusinessSchema} />
           <JsonLd data={businessSchema} />
           <JsonLd data={breadcrumbSchema} />

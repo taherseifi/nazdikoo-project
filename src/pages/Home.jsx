@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../components/layout/Layout'
+import { Helmet } from 'react-helmet-async';
+
 import Seo from '../components/common/Seo'
 import StructuredData from '../components/common/StructuredData'
 import Hero from '../components/home/Hero'
@@ -9,7 +11,7 @@ import ExploreCategories from '../components/home/ExploreCategories'
 import TrendingListings from '../components/home/TrendingListings'
 import BlogSection from '../components/home/BlogSection'
 import ListingsByArea from '../components/home/ListingsByArea'
-import ServicesIntro from '../components/home/ServicesIntro'
+
 import { getCategories } from '../services/supabase/categories.api'
 import {
   getBusinessesGroupedByCity,
@@ -66,6 +68,16 @@ function Home() {
 
   return (
     <Layout>
+   <Helmet>
+  <title>نزدیکو | خدمات هوشمند و متخصصین فارسی‌زبان </title>
+  <meta name="description" content="با نزدیکو، بهترین متخصصین و خدمات فنی، نظافتی و تخصصی را در تمام محله‌های استانبول پیدا کنید. سریع، مطمئن و در دسترس در قلب ترکیه." />
+  <meta name="keywords" content="خدمات در استانبول، متخصص فارسی زبان ترکیه، نظافت منزل استانبول، تعمیرات در استانبول، نزدیکو، Nazdikoo" />
+  <link rel="canonical" href="https://nazdikoo.com/" />
+  <meta property="og:title" content="نزدیکو | پلتفرم خدمات هوشمند در استانبول" />
+  <meta property="og:description" content="دسترسی سریع به متخصصین مجرب در استانبول. خدمات مورد نیازت را در نزدیکی خودت پیدا کن." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nazdikoo.com/" />
+</Helmet>
       <Seo
         title="خدمات ایرانی در استانبول | بهترین دکتر، آرایشگاه و کسب‌وکارها | Nazdikoo"
         description="در نزدیکو بهترین خدمات ایرانی در استانبول و شهرهای دیگر را پیدا کنید؛ از پزشک و آرایشگاه تا خدمات ساختمانی، زیبایی و کسب‌وکارهای ایرانی."

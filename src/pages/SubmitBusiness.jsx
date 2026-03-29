@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Helmet } from 'react-helmet-async';
+
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -379,6 +381,14 @@ function SubmitBusiness() {
 
   return (
     <Layout>
+      <Helmet>
+  <title>ثبت رایگان کسب‌وکار و تخصص در استانبول | نزدیکو</title>
+  <meta name="description" content="کسب‌وکار خود را به هزاران مشتری در استانبول معرفی کنید. ثبت‌نام متخصصین فنی، نظافتی و خدماتی در پلتفرم نزدیکو." />
+  <meta name="keywords" content="ثبت آگهی استانبول، تبلیغات در ترکیه، جذب مشتری در استانبول، پنل متخصصین نزدیکو" />
+  <link rel="canonical" href="https://nazdikoo.com/submit-business" />
+  <meta property="og:title" content="کسب‌وکارتان را در استانبول رشد دهید | نزدیکو" />
+  <meta property="og:description" content="به شبکه بزرگ متخصصین نزدیکو بپیوندید و مشتریان جدید جذب کنید." />
+</Helmet>
       <PageHero
         title="ثبت خدمات"
         subtitle="اطلاعات کسب‌وکار خودت را ثبت کن تا بعد از بررسی و تایید در نزدیکو نمایش داده شود."

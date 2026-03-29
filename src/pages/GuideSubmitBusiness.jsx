@@ -5,6 +5,8 @@ import SidebarInfoBlocks from '../components/common/SidebarInfoBlocks'
 import Seo from '../components/common/Seo'
 import { getSeoEntry } from '../services/supabase/seo.api'
 import { getBusinesses, getFeaturedBusinesses } from '../services/supabase/businesses.api'
+import { Helmet } from 'react-helmet-async';
+
 
 const guideSections = [
   {
@@ -60,6 +62,24 @@ function GuideSubmitBusiness() {
 
   return (
     <Layout>
+      <Helmet>
+  <title>راهنمای جامع ثبت تخصص در استانبول | نزدیکو</title>
+  <meta 
+    name="description" 
+    content="چگونه در نزدیکو به عنوان متخصص ثبت‌نام کنیم؟ آموزش گام‌به‌گام برای ورود به بازار کار خدمات در استانبول و جذب مشتری." 
+  />
+  <meta 
+    name="keywords" 
+    content="آموزش ثبت نام نزدیکو، کار در استانبول، جذب مشتری فارسی زبان، راهنمای متخصصین نزدیکو" 
+  />
+  <link rel="canonical" href="https://nazdikoo.com/guide-submit-business" />
+  
+  <meta property="og:title" content="راهنمای ورود به بازار کار خدمات در استانبول" />
+  <meta 
+    property="og:description" 
+    content="با این راهنما، پروفایل حرفه‌ای خود را در نزدیکو بسازید و در استانبول دیده شوید." 
+  />
+</Helmet>
       <Seo
         title={seo?.meta_title || 'آموزش ثبت خدمات | Nazdikoo'}
         description={seo?.meta_description || 'راهنمای ثبت خدمات'}

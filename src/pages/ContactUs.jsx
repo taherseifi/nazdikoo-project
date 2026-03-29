@@ -4,6 +4,7 @@ import PageHero from '../components/common/PageHero'
 import Seo from '../components/common/Seo'
 import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react'
 import { createContactMessage } from '../services/supabase/contactMessages.api'
+import { Helmet } from 'react-helmet-async';
 
 function ContactUs() {
   const [form, setForm] = useState({
@@ -55,11 +56,12 @@ function ContactUs() {
 
   return (
     <Layout>
-      <Seo
-        title="تماس با ما | نزدیکو"
-        description="برای ارتباط با تیم نزدیکو، ارسال سوالات، پیشنهادها، همکاری، تبلیغات و ویرایش اطلاعات کسب‌وکار از صفحه تماس با ما استفاده کنید."
-        canonical="https://nazdikoo.com/contact"
-      />
+ <Helmet>
+  <title>تماس با ما | پشتیبانی و همکاری با نزدیکو</title>
+  <meta name="description" content="سوالات، پیشنهادات و درخواست‌های همکاری خود را با تیم پشتیبانی نزدیکو در استانبول در میان بگذارید. ما همراه شما هستیم." />
+  <meta name="keywords" content="تماس با نزدیکو، پشتیبانی نزدیکو، دفتر نزدیکو در استانبول، همکاری با نزدیکو" />
+  <link rel="canonical" href="https://nazdikoo.com/contact-us" />
+</Helmet>
 
       <PageHero
         title="تماس با ما"

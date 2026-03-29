@@ -50,6 +50,12 @@ function About() {
 
   return (
     <Layout>
+      <Helmet>
+  <title>درباره ما | داستان پلتفرم نزدیکو در ترکیه</title>
+  <meta name="description" content="نزدیکو پلی است میان کاربران و متخصصین در استانبول. با اهداف و تیم ما برای بهبود کیفیت خدمات در ترکیه آشنا شوید." />
+  <meta name="keywords" content="درباره نزدیکو، تیم نزدیکو، خدمات در ترکیه، استارتاپ استانبول" />
+  <link rel="canonical" href="https://nazdikoo.com/about" />
+</Helmet>
       <Seo
         title={seo.title}
         description={seo.description}

@@ -14,6 +14,8 @@ import Seo from '../components/common/Seo'
 import StructuredData from '../components/common/StructuredData'
 import BusinessCard from '../components/business/BusinessCard'
 import PageHero from '../components/common/PageHero'
+import { Helmet } from 'react-helmet-async';
+
 
 function Listings() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -271,6 +273,15 @@ function Listings() {
 
   return (
     <Layout>
+      // در این صفحه بهتر است نام دسته را داینامیک بگذارید
+<Helmet>
+  <title>لیست خدمات و متخصصین در استانبول | نزدیکو</title>
+  <meta name="description" content="مشاهده و مقایسه برترین متخصصین در استانبول. فیلتر بر اساس تخصص و محله برای پیدا کردن بهترین خدمات‌دهنده در نزدیکی شما." />
+  <meta name="keywords" content="لیست متخصصین استانبول، جستجوی خدمات در ترکیه، بهترین فنی‌کار استانبول، خدمات نزدیکو" />
+  <link rel="canonical" href="https://nazdikoo.com/listings" />
+  <meta property="og:title" content="جستجوی متخصصین در استانبول | نزدیکو" />
+  <meta property="og:description" content="بهترین خدمات‌دهندگان استانبول را بر اساس امتیاز و نزدیکی پیدا کنید." />
+</Helmet>
       <Seo
         title={seo.title}
         description={seo.description}

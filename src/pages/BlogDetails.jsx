@@ -207,6 +207,17 @@ const breadcrumbSchema = useMemo(() => {
     <Layout>
       {seo ? (
         <>
+        <Helmet>
+  <title>{blogTitle} | مجله تخصصی نزدیکو</title>
+  <meta name="description" content={blogSummary} />
+  <meta name="keywords" content={`${blogTags}, نزدیکو، استانبول، راهنمای ترکیه`} />
+  <link rel="canonical" href={`https://nazdikoo.com/blogs/${blogSlug}`} />
+  
+  <meta property="og:title" content={blogTitle} />
+  <meta property="og:description" content={blogSummary} />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content={blogThumbnailUrl} />
+</Helmet>
           <Seo
             title={seo.title}
             description={seo.description}
@@ -217,6 +228,7 @@ const breadcrumbSchema = useMemo(() => {
             ogDescription={seo.ogDescription}
             type="article"
           />
+       
           <StructuredData data={seoEntry?.custom_schema_json || articleSchema} />
           <JsonLd data={blogSchema} />
           <JsonLd data={breadcrumbSchema} />

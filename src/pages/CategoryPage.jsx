@@ -15,6 +15,7 @@ import {
 } from '../services/supabase/businesses.api'
 import JsonLd from '../components/seo/JsonLd'
 import { buildBreadcrumbSchema } from '../utils/schema'
+import { Helmet } from 'react-helmet-async';
 
 function CategoryPage() {
   const { slug } = useParams()
@@ -156,6 +157,14 @@ function CategoryPage() {
 
   return (
     <Layout>
+   <Helmet>
+  <title>لیست خدمات و متخصصین در استانبول | نزدیکو</title>
+  <meta name="description" content="مشاهده و مقایسه برترین متخصصین در استانبول. فیلتر بر اساس تخصص و محله برای پیدا کردن بهترین خدمات‌دهنده در نزدیکی شما." />
+  <meta name="keywords" content="لیست متخصصین استانبول، جستجوی خدمات در ترکیه، بهترین فنی‌کار استانبول، خدمات نزدیکو" />
+  <link rel="canonical" href="https://nazdikoo.com/listings" />
+  <meta property="og:title" content="جستجوی متخصصین در استانبول | نزدیکو" />
+  <meta property="og:description" content="بهترین خدمات‌دهندگان استانبول را بر اساس امتیاز و نزدیکی پیدا کنید." />
+</Helmet>
       <Seo
         title={seo.title}
         description={seo.description}

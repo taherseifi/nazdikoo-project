@@ -9,6 +9,8 @@ import { getSeoEntry } from '../services/supabase/seo.api'
 import { buildSeoPayload } from '../utils/seo/buildSeoPayload'
 import { getCanonicalUrl } from '../utils/seo/getCanonicalUrl'
 import { CalendarDays } from 'lucide-react'
+import { Helmet } from 'react-helmet-async';
+
 
 function Blogs() {
   const [blogs, setBlogs] = useState([])
@@ -61,6 +63,14 @@ function Blogs() {
 
   return (
     <Layout>
+    <Helmet>
+  <title>وبلاگ نزدیکو | راهنمای زندگی و خدمات در استانبول</title>
+  <meta name="description" content="آموزش‌ها و مقالات کاربردی درباره زندگی در ترکیه، هزینه‌ها و معرفی بهترین خدمات در استانبول را در مجله نزدیکو دنبال کنید." />
+  <meta name="keywords" content="بلاگ نزدیکو، زندگی در استانبول، هزینه‌های ترکیه، راهنمای خدمات استانبول، اقامت ترکیه" />
+  <link rel="canonical" href="https://nazdikoo.com/blogs" />
+  <meta property="og:title" content="مجله تخصصی نزدیکو استانبول" />
+  <meta property="og:description" content="هر آنچه برای زندگی و دریافت خدمات در استانبول نیاز دارید." />
+</Helmet>
       <Seo
         title={seo.title}
         description={seo.description}

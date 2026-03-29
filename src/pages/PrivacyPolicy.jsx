@@ -1,10 +1,28 @@
 import Layout from '../components/layout/Layout'
 import PageHero from '../components/common/PageHero'
 import Seo from '../components/common/Seo'
+import { Helmet } from 'react-helmet-async';
+
 
 function PrivacyPolicy() {
   return (
     <Layout>
+      <Helmet>
+  <title>قوانین و حریم خصوصی | امنیت کاربران در نزدیکو</title>
+  <meta 
+    name="description" 
+    content="مشاهده قوانین استفاده از خدمات نزدیکو در استانبول و سیاست‌های حفظ حریم خصوصی کاربران و متخصصین در ترکیه." 
+  />
+  <meta 
+    name="keywords" 
+    content="قوانین نزدیکو، حریم خصوصی، امنیت اطلاعات کاربران در ترکیه، شرایط استفاده نزدیکو" 
+  />
+  <link rel="canonical" href="https://nazdikoo.com/privacy-policy" />
+  
+  <meta property="og:title" content="قوانین و حریم خصوصی | نزدیکو" />
+  <meta property="og:type" content="article" />
+  <meta name="robots" content="noindex, follow" /> 
+</Helmet>
       <Seo
         title="حریم خصوصی | نزدیکو"
         description="سیاست حریم خصوصی نزدیکو درباره نحوه جمع‌آوری، استفاده، نگهداری و نمایش اطلاعات کاربران و خدمات‌دهندگان در سایت."
