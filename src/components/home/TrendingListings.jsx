@@ -57,10 +57,10 @@ function TrendingListings({ businesses = [] }) {
             </button>
 
             <div className="hidden items-center gap-2 md:flex">
-              <button className="trending-prev flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100">
+              <button className="trending-prev flex h-12 w-12 items-center justify-center rounded-full border border-slate-500 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100">
                 <ChevronRight className="h-5 w-5" />
               </button>
-              <button className="trending-next flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100">
+              <button className="trending-next flex h-12 w-12 items-center justify-center rounded-full border border-slate-500 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100">
                 <ChevronLeft className="h-5 w-5" />
               </button>
             </div>

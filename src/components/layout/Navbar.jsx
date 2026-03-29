@@ -82,9 +82,7 @@ function Navbar() {
               خدمات
             </NavLink>
 
-            <NavLink to="/about" className={navLinkClass}>
-              درباره ما
-            </NavLink>
+           
             <NavLink
             to="/blogs" className={navLinkClass}>
             بلاگ
@@ -92,6 +90,9 @@ function Navbar() {
           
           <NavLink to="/faq" className={navLinkClass}>سوالات متداول</NavLink>
           <NavLink to="/guide-submit-business" className={navLinkClass}>راهنمای ثبت</NavLink>
+           <NavLink to="/about" className={navLinkClass}>
+              درباره ما
+            </NavLink>
           <NavLink to="/contact-us" className={navLinkClass}>تماس با ما</NavLink>
           
          
@@ -163,14 +164,7 @@ function Navbar() {
           خدمات
         </NavLink>
 
-        <NavLink
-          to="/about"
-          className={mobileNavLinkClass}
-          onClick={() => setMobileOpen(false)}
-        >
-          درباره ما
-        </NavLink>
-
+      
         <NavLink
           to="/blogs"
           className={mobileNavLinkClass}
@@ -200,6 +194,15 @@ function Navbar() {
         <NavLink to="/nearby-services" className={navLinkClass}>
           خدمات نزدیک شما
         </NavLink>
+        
+          <NavLink
+          to="/about"
+          className={mobileNavLinkClass}
+          onClick={() => setMobileOpen(false)}
+        >
+          درباره ما
+        </NavLink>
+
         <NavLink
           to="/contact-us"
           className={mobileNavLinkClass}

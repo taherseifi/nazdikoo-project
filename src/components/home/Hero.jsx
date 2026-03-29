@@ -109,7 +109,7 @@ function Hero() {
   return (
     <section className="relative min-h-screen overflow-hidden">
       <img
-        src="/hero2.jpg"
+        src="/hero2.webp"
         alt="hero"
         className="absolute inset-0 h-full w-full object-cover"
       />
