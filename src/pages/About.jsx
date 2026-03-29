@@ -73,9 +73,9 @@ function About() {
               درباره نزدیکو
             </span>
 
-            <h2 className="mt-5 text-4xl font-bold leading-tight text-slate-800 md:text-5xl">
+            <h1 className="mt-5 text-4xl font-bold leading-tight text-slate-800 md:text-5xl">
               نزدیکو؛ پلی بین کاربران و خدمات‌دهندگان قابل اعتماد
-            </h2>
+            </h1>
 
             <p className="mt-6 text-lg leading-8 text-slate-600">
               نزدیکو با یک هدف ساده اما مهم شکل گرفت: پیدا کردن خدمات مناسب باید

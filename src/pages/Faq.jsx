@@ -7,6 +7,8 @@ import Seo from '../components/common/Seo'
 import { getBusinesses, getFeaturedBusinesses } from '../services/supabase/businesses.api'
 import JsonLd from '../components/seo/JsonLd'
 import { buildFaqSchema } from '../utils/schema'
+import { getCanonicalUrl } from '../utils/seo/getCanonicalUrl'
+
 const faqItems = [
   {
     question: 'چطور می‌توانم خدمات خودم را در نزدیکو ثبت کنم؟',
@@ -26,7 +28,7 @@ const faqItems = [
   {
     question: 'آیا می‌توانم چند عکس برای خدماتم آپلود کنم؟',
     answer:
-      'بله، هنگام ثبت خدمات می‌توانید یک عکس کاور و حداقل ۳ عکس برای گالری آپلود کنید تا صفحه شما کامل‌تر و حرفه‌ای‌تر نمایش داده شود.',
+      'بله، هنگام ثبت خدمات می‌توانید یک عکس کاور و چند عکس برای گالری آپلود کنید تا صفحه شما کامل‌تر و حرفه‌ای‌تر نمایش داده شود.',
   },
   {
     question: 'اگر اطلاعات کسب‌وکارم تغییر کرد چه کار کنم؟',
@@ -34,7 +36,9 @@ const faqItems = [
       'اگر بعداً نیاز به ویرایش اطلاعات داشتید، باید از طریق ارتباط با پشتیبانی یا پنل مدیریت هماهنگ شود تا اطلاعات جدید ثبت گردد.',
   },
 ]
+
 const faqSchema = buildFaqSchema(faqItems)
+
 function Faq() {
   const [featuredServices, setFeaturedServices] = useState([])
   const [latestServices, setLatestServices] = useState([])
@@ -63,13 +67,10 @@ function Faq() {
       <Seo
         title="سوالات متداول | نزدیکو"
         description="پاسخ سوالات متداول کاربران نزدیکو درباره ثبت خدمات، تایید کسب‌وکار، آپلود تصاویر، اطلاعات تماس و نمایش صفحات خدمات."
-        canonical="https://nazdikoo.com/faq"
+        canonical={getCanonicalUrl('/faq')}
       />
 
-      <PageHero
-        title="سوالات متداول"
-        subtitle="پاسخ سوالات پرتکرار کاربران"
-      />
+      <PageHero title="سوالات متداول" subtitle="پاسخ سوالات پرتکرار کاربران" />
 
       <section className="bg-slate-100 px-4 py-12 md:px-6">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
@@ -84,15 +85,15 @@ function Faq() {
               </h1>
 
               <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600">
-                اگر درباره ثبت خدمات، نمایش کسب‌وکار، آپلود تصاویر، موقعیت نقشه
-                یا نحوه تایید صفحه‌ات سوال داری، این بخش سریع‌ترین راه برای رسیدن
-                به جواب است.
+                اگر درباره ثبت خدمات، نمایش کسب‌وکار، آپلود تصاویر، موقعیت نقشه یا
+                نحوه تایید صفحه‌ات سوال داری، این بخش سریع‌ترین راه برای رسیدن به جواب است.
               </p>
             </div>
 
-            <div className="space-y-4 ">
+            <div className="space-y-4">
               {faqItems.map((item, index) => (
-                <AccordionItem className="rounded-2xl bg-white shadow-sm border-slate-300"
+                <AccordionItem
+                  className="rounded-2xl border border-slate-300 bg-white shadow-sm"
                   key={index}
                   question={item.question}
                   answer={item.answer}

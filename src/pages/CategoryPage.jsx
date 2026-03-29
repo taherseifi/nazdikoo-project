@@ -5,7 +5,6 @@ import Seo from '../components/common/Seo'
 import StructuredData from '../components/common/StructuredData'
 import PageHero from '../components/common/PageHero'
 import { ChevronLeft } from 'lucide-react'
-
 import { supabase } from '../services/supabase/client'
 import { getSeoEntry } from '../services/supabase/seo.api'
 import { buildSeoPayload } from '../utils/seo/buildSeoPayload'
@@ -14,6 +13,8 @@ import {
   getBusinesses,
   getFeaturedBusinesses,
 } from '../services/supabase/businesses.api'
+import JsonLd from '../components/seo/JsonLd'
+import { buildBreadcrumbSchema } from '../utils/schema'
 
 function CategoryPage() {
   const { slug } = useParams()
@@ -24,7 +25,6 @@ function CategoryPage() {
   const [categoryBusinesses, setCategoryBusinesses] = useState([])
   const [featuredServices, setFeaturedServices] = useState([])
   const [latestServices, setLatestServices] = useState([])
-
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -45,27 +45,23 @@ function CategoryPage() {
 
         setCategory(categoryData)
 
-        const [
-          seoData,
-          subcategoriesResult,
-          businessesResult,
-          featuredData,
-          latestData,
-        ] = await Promise.all([
-          getSeoEntry('category', categoryData.id),
-          supabase
-            .from('subcategories')
-            .select('id, name, slug, category_id')
-            .eq('category_id', categoryData.id)
-            .order('name', { ascending: true }),
-          supabase
-            .from('businesses')
-            .select('*')
-            .eq('category_id', categoryData.id)
-            .order('created_at', { ascending: false }),
-          getFeaturedBusinesses(3),
-          getBusinesses(null, null, 6),
-        ])
+        const [seoData, subcategoriesResult, businessesResult, featuredData, latestData] =
+          await Promise.all([
+            getSeoEntry('category', categoryData.id),
+            supabase
+              .from('subcategories')
+              .select('id, name, slug, category_id')
+              .eq('category_id', categoryData.id)
+              .order('name', { ascending: true }),
+            supabase
+              .from('businesses')
+              .select('*')
+              .eq('category_id', categoryData.id)
+              .eq('is_approved', true)
+              .order('created_at', { ascending: false }),
+            getFeaturedBusinesses(3),
+            getBusinesses(null, null, 6),
+          ])
 
         if (subcategoriesResult.error) throw subcategoriesResult.error
         if (businessesResult.error) throw businessesResult.error
@@ -93,11 +89,11 @@ function CategoryPage() {
       seoEntry,
       path: `/category/${category.slug}`,
       fallback: {
-        title: `${category.name} | نزدیکو`,
+        title: `${category.name} | خدمات مرتبط | نزدیکو`,
         description:
           category.description ||
-          `مشاهده خدمات مرتبط با ${category.name}، معرفی کسب‌وکارها، بررسی خدمات و پیدا کردن بهترین گزینه‌ها در نزدیکو.`,
-        image: categoryBusinesses?.[0]?.image_url || '',
+          `مشاهده خدمات مرتبط با ${category.name}، معرفی کسب‌وکارها، بررسی زیرشاخه‌ها و پیدا کردن بهترین گزینه‌ها در نزدیکو.`,
+        image: categoryBusinesses?.[0]?.image_url || categoryBusinesses?.[0]?.cover_image || '',
       },
     })
   }, [category, seoEntry, categoryBusinesses])
@@ -110,8 +106,7 @@ function CategoryPage() {
       '@type': 'CollectionPage',
       name: category.name || '',
       description:
-        category.description ||
-        `لیست خدمات و کسب‌وکارهای مرتبط با ${category.name}`,
+        category.description || `لیست خدمات و کسب‌وکارهای مرتبط با ${category.name}`,
       url: getCanonicalUrl(`/category/${category.slug}`),
       mainEntity: {
         '@type': 'ItemList',
@@ -126,10 +121,19 @@ function CategoryPage() {
     }
   }, [category, categoryBusinesses])
 
+  const breadcrumbSchema = useMemo(() => {
+    if (!category) return null
+    return buildBreadcrumbSchema([
+      { name: 'خانه', url: '/' },
+      { name: 'خدمات', url: '/listings' },
+      { name: category.name, url: `/category/${category.slug}` },
+    ])
+  }, [category])
+
   if (loading) {
     return (
       <Layout>
-        <div className="px-4 pt-32 pb-16 md:px-6">در حال بارگذاری...</div>
+        <div className="px-4 pb-16 pt-32 md:px-6">در حال بارگذاری...</div>
       </Layout>
     )
   }
@@ -137,7 +141,7 @@ function CategoryPage() {
   if (error && !category) {
     return (
       <Layout>
-        <div className="px-4 pt-32 pb-16 text-red-500 md:px-6">{error}</div>
+        <div className="px-4 pb-16 pt-32 text-red-500 md:px-6">{error}</div>
       </Layout>
     )
   }
@@ -145,36 +149,28 @@ function CategoryPage() {
   if (!category) {
     return (
       <Layout>
-        <div className="px-4 pt-32 pb-16 text-red-500 md:px-6">
-          دسته‌بندی پیدا نشد
-        </div>
+        <div className="px-4 pb-16 pt-32 text-red-500 md:px-6">دسته‌بندی پیدا نشد</div>
       </Layout>
     )
   }
 
   return (
     <Layout>
-      {seo ? (
-        <>
-          <Seo
-            title={seo.title}
-            description={seo.description}
-            image={seo.image}
-            url={seo.url}
-            robots={seo.robots}
-            ogTitle={seo.ogTitle}
-            ogDescription={seo.ogDescription}
-          />
-          <StructuredData data={seoEntry?.custom_schema_json || categorySchema} />
-        </>
-      ) : null}
+      <Seo
+        title={seo.title}
+        description={seo.description}
+        image={seo.image}
+        url={seo.url}
+        robots={seo.robots}
+        ogTitle={seo.ogTitle}
+        ogDescription={seo.ogDescription}
+      />
+      <StructuredData data={seoEntry?.custom_schema_json || categorySchema} />
+      <JsonLd data={breadcrumbSchema} />
 
       <PageHero
         title={category.name}
-        subtitle={
-          category.description ||
-          `لیست خدمات، کسب‌وکارها و زیرشاخه‌های مرتبط با ${category.name}`
-        }
+        subtitle={category.description || `لیست خدمات، کسب‌وکارها و زیرشاخه‌های مرتبط با ${category.name}`}
       />
 
       <section className="bg-slate-50 px-4 py-12 md:px-6">
@@ -193,6 +189,12 @@ function CategoryPage() {
                 {category.description ||
                   `در این صفحه می‌توانید خدمات مرتبط با ${category.name} را مشاهده کنید، کسب‌وکارهای فعال را بررسی کنید و با زیرشاخه‌های مهم این دسته آشنا شوید.`}
               </p>
+
+              <p className="mt-4 text-base leading-8 text-slate-600">
+                این صفحه برای کاربرانی مناسب است که می‌خواهند سریع‌تر بین گزینه‌های
+                مختلف جست‌وجو کنند، خدمات ثبت‌شده را ببینند و از طریق اطلاعات تماس،
+                آدرس و جزئیات هر کسب‌وکار، انتخاب دقیق‌تری داشته باشند.
+              </p>
             </div>
 
             {subcategories.length > 0 ? (
@@ -202,9 +204,7 @@ function CategoryPage() {
                 </h2>
 
                 <p className="mt-3 text-base leading-8 text-slate-600">
-                  در دسته {category.name} می‌توانید خدمات تخصصی متنوعی را پیدا
-                  کنید. زیرشاخه‌های این بخش به شما کمک می‌کنند راحت‌تر خدمت
-                  موردنظر خود را پیدا کنید.
+                  زیرشاخه‌های این دسته کمک می‌کنند راحت‌تر به خدمت موردنظر خودت برسی.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
@@ -260,14 +260,8 @@ function CategoryPage() {
                       />
 
                       <div className="p-5">
-                        <h3 className="text-xl font-bold text-slate-800">
-                          {item.title}
-                        </h3>
-
-                        <div className="mt-2 text-sm text-slate-500">
-                          {item.city || 'بدون شهر'}
-                        </div>
-
+                        <h3 className="text-xl font-bold text-slate-800">{item.title}</h3>
+                        <div className="mt-2 text-sm text-slate-500">{item.city || 'بدون شهر'}</div>
                         {item.description ? (
                           <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-600">
                             {item.description}
@@ -279,67 +273,11 @@ function CategoryPage() {
                 </div>
               )}
             </div>
-
-            <div className="rounded-[28px] bg-white p-6 shadow-sm md:p-8">
-              <h2 className="text-2xl font-bold text-slate-800 md:text-3xl">
-                درباره خدمات {category.name}
-              </h2>
-
-              <div className="mt-5 space-y-5 text-base leading-8 text-slate-600">
-                <p>
-                  اگر به دنبال بهترین خدمات {category.name} هستی، این صفحه به تو
-                  کمک می‌کند کسب‌وکارهای فعال این حوزه را راحت‌تر پیدا کنی.
-                  کاربران می‌توانند خدمات ثبت‌شده را بررسی کنند، اطلاعات تماس و
-                  موقعیت را ببینند و مناسب‌ترین گزینه را انتخاب کنند.
-                </p>
-
-                {subcategories.length > 0 ? (
-                  <p>
-                    در این دسته‌بندی، زیرشاخه‌هایی مانند{' '}
-                    {subcategories.map((item) => item.name).join('، ')} وجود
-                    دارند که باعث می‌شوند جستجوی خدمات برای کاربر دقیق‌تر و
-                    سریع‌تر انجام شود.
-                  </p>
-                ) : null}
-
-                <p>
-                  نزدیکو تلاش می‌کند خدمات مرتبط با {category.name} را به‌صورت
-                  منظم، قابل جستجو و کاربردی نمایش دهد تا کاربران بتوانند با
-                  اطمینان بیشتری کسب‌وکار موردنظر خود را انتخاب کنند.
-                </p>
-              </div>
-            </div>
-
-            <div className="block xl:hidden">
-              <SidebarSection
-                title="آخرین خدمات"
-                items={latestServices}
-                type="service"
-              />
-            </div>
           </div>
 
           <aside className="space-y-6">
-            {subcategories.length > 0 ? (
-              <SidebarSubcategories
-                categorySlug={category.slug}
-                items={subcategories}
-              />
-            ) : null}
-
-            <SidebarSection
-              title="خدمات ویژه"
-              items={featuredServices}
-              type="service"
-            />
-
-            <div className="hidden xl:block">
-              <SidebarSection
-                title="آخرین خدمات"
-                items={latestServices}
-                type="service"
-              />
-            </div>
+            <SidebarSection title="خدمات ویژه" items={featuredServices} />
+            <SidebarSection title="آخرین خدمات" items={latestServices} />
           </aside>
         </div>
       </section>
@@ -347,27 +285,7 @@ function CategoryPage() {
   )
 }
 
-function SidebarSubcategories({ categorySlug, items = [] }) {
-  return (
-    <div className="rounded-[28px] bg-white p-5 shadow-sm">
-      <h3 className="mb-5 text-2xl font-bold text-slate-800">زیرشاخه‌ها</h3>
-
-      <div className="space-y-3">
-        {items.map((item) => (
-          <Link
-            key={item.id}
-            to={`/listings?category=${categorySlug}&subcategory=${item.slug}`}
-            className="block rounded-2xl p-3 transition hover:bg-slate-50"
-          >
-            <div className="font-medium text-slate-700">{item.name}</div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function SidebarSection({ title, items = [], type = 'service' }) {
+function SidebarSection({ title, items = [] }) {
   return (
     <div className="rounded-[28px] bg-white p-5 shadow-sm">
       <h3 className="mb-5 text-2xl font-bold text-slate-800">{title}</h3>
@@ -389,9 +307,7 @@ function SidebarSection({ title, items = [], type = 'service' }) {
               />
 
               <div className="min-w-0 flex-1">
-                <div className="line-clamp-1 font-medium text-slate-700">
-                  {item.title}
-                </div>
+                <div className="line-clamp-1 font-medium text-slate-700">{item.title}</div>
                 <div className="mt-1 text-sm text-slate-500">{item.city}</div>
               </div>
             </Link>

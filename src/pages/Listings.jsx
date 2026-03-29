@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-
+import { Link, useSearchParams } from 'react-router-dom'
 import {
   getAvailableCities,
   getAvailableCountries,
   getFilteredBusinesses,
-  
 } from '../services/supabase/businesses.api'
 import { getCategories } from '../services/supabase/categories.api'
 import { getSeoEntry } from '../services/supabase/seo.api'
@@ -108,7 +106,6 @@ function Listings() {
       try {
         setLoading(true)
         setError('')
-
         const data = await getFilteredBusinesses(filters)
         setBusinesses(data || [])
       } catch (err) {
@@ -157,9 +154,7 @@ function Listings() {
 
     if (filters.country) params.set('country', filters.country)
     if (filters.city) params.set('city', filters.city)
-    if (filters.sortBy && filters.sortBy !== 'newest') {
-      params.set('sort', filters.sortBy)
-    }
+    if (filters.sortBy && filters.sortBy !== 'newest') params.set('sort', filters.sortBy)
 
     if (filters.categoryId) {
       const selectedCategory = categories.find(
@@ -175,30 +170,12 @@ function Listings() {
   }, [filters, categories, setSearchParams])
 
   const pageTitle = useMemo(() => {
-    if (category?.name && filters.city) {
-      return `${category.name} در ${filters.city}`
-    }
-
-    if (category?.name && filters.country) {
-      return `${category.name} در ${filters.country}`
-    }
-
-    if (category?.name) {
-      return category.name
-    }
-
-    if (filters.city && filters.country) {
-      return `خدمات در ${filters.city}، ${filters.country}`
-    }
-
-    if (filters.city) {
-      return `خدمات در ${filters.city}`
-    }
-
-    if (filters.country) {
-      return `خدمات در ${filters.country}`
-    }
-
+    if (category?.name && filters.city) return `${category.name} در ${filters.city}`
+    if (category?.name && filters.country) return `${category.name} در ${filters.country}`
+    if (category?.name) return category.name
+    if (filters.city && filters.country) return `خدمات در ${filters.city}، ${filters.country}`
+    if (filters.city) return `خدمات در ${filters.city}`
+    if (filters.country) return `خدمات در ${filters.country}`
     return 'همه خدمات'
   }, [category, filters.city, filters.country])
 
@@ -206,36 +183,28 @@ function Listings() {
     if (category?.name && filters.city) {
       return `لیست ${category.name} در ${filters.city} به همراه اطلاعات تماس، آدرس و جزئیات کامل کسب‌وکارها.`
     }
-
     if (category?.name && filters.country) {
       return `لیست ${category.name} در ${filters.country} به همراه اطلاعات تماس، آدرس و جزئیات کامل کسب‌وکارها.`
     }
-
     if (category?.name) {
       return `لیست ${category.name} و خدمات مرتبط به همراه اطلاعات تماس، آدرس و جزئیات کامل.`
     }
-
     if (filters.city && filters.country) {
       return `مشاهده خدمات و کسب‌وکارهای فعال در ${filters.city}، ${filters.country} به همراه اطلاعات تماس و جزئیات کامل.`
     }
-
     if (filters.city) {
       return `مشاهده خدمات و کسب‌وکارهای فعال در ${filters.city} به همراه اطلاعات تماس و جزئیات کامل.`
     }
-
     if (filters.country) {
       return `مشاهده خدمات و کسب‌وکارهای فعال در ${filters.country} به همراه اطلاعات تماس و جزئیات کامل.`
     }
-
     return 'همه خدمات ثبت‌شده را بر اساس شهر، کشور، نوع خدمت و مرتب‌سازی دلخواه جستجو و فیلتر کن.'
   }, [category, filters.city, filters.country])
 
   const canonicalPath = useMemo(() => {
     const params = new URLSearchParams()
-
     if (filters.country) params.set('country', filters.country)
     if (filters.city) params.set('city', filters.city)
-
     if (filters.categoryId) {
       const selectedCategory = categories.find(
         (item) => String(item.id) === String(filters.categoryId)
@@ -244,11 +213,9 @@ function Listings() {
         params.set('category', selectedCategory.slug)
       }
     }
-
     if (filters.sortBy && filters.sortBy !== 'newest') {
       params.set('sort', filters.sortBy)
     }
-
     const queryString = params.toString()
     return queryString ? `/listings?${queryString}` : '/listings'
   }, [filters, categories])
@@ -260,7 +227,7 @@ function Listings() {
       fallback: {
         title: pageTitle,
         description: pageDescription,
-        image: businesses?.[0]?.image_url || '',
+        image: businesses?.[0]?.image_url || businesses?.[0]?.cover_image || '',
       },
     })
   }, [seoEntry, canonicalPath, pageTitle, pageDescription, businesses])
@@ -272,13 +239,24 @@ function Listings() {
       name: pageTitle,
       description: pageDescription,
       url: getCanonicalUrl(canonicalPath),
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: businesses.length,
+        itemListElement: businesses.slice(0, 20).map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          url: getCanonicalUrl(`/business/${item.slug}`),
+          name: item.title,
+        })),
+      },
     }
-  }, [pageTitle, pageDescription, canonicalPath])
+  }, [pageTitle, pageDescription, canonicalPath, businesses])
 
   function handleFilterChange(key, value) {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
+      ...(key === 'country' ? { city: '' } : {}),
     }))
   }
 
@@ -304,55 +282,29 @@ function Listings() {
       />
       <StructuredData data={seoEntry?.custom_schema_json || listingsSchema} />
 
-      <PageHero
-        title={pageTitle}
-        subtitle="خدمات را بر اساس شهر، کشور، نوع خدمت و مرتب‌سازی دلخواه فیلتر کن."
-      />
+      <PageHero title={pageTitle} subtitle={pageDescription} />
 
-      <section className="px-4 pb-10 md:px-6">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-8 rounded-3xl bg-white p-6 shadow-sm">
-            <h2 className="mb-5 text-3xl font-bold">فیلتر و جستجوی خدمات</h2>
+      <section className="bg-slate-50 px-4 py-12 md:px-6">
+        <div className="mx-auto max-w-7xl space-y-8">
+          <div className="rounded-[28px] bg-white p-6 shadow-sm md:p-8">
+            <h1 className="text-3xl font-bold text-slate-800 md:text-5xl">
+              {pageTitle}
+            </h1>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
-              <select
-                value={filters.country}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    country: e.target.value,
-                    city: '',
-                  }))
-                }
-                className="rounded-2xl border border-slate-800 px-4 py-3 outline-none"
-              >
-                <option value="">همه کشورها</option>
-                {countries.map((country) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
+            <p className="mt-4 leading-8 text-slate-600">
+              {pageDescription} در این صفحه می‌توانی خدمات مختلف را بر اساس دسته‌بندی،
+              شهر، کشور و نوع مرتب‌سازی فیلتر کنی. اگر دنبال پزشک، آرایشگاه، خدمات
+              ساختمانی، آموزش، زیبایی یا دیگر کسب‌وکارهای ایرانی هستی، این بخش
+              سریع‌ترین راه برای پیدا کردن گزینه مناسب است.
+            </p>
 
-              <select
-                value={filters.city}
-                onChange={(e) => handleFilterChange('city', e.target.value)}
-                className="rounded-2xl border border-slate-800 px-4 py-3 outline-none"
-              >
-                <option value="">همه شهرها</option>
-                {cities.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
-
+            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
               <select
                 value={filters.categoryId}
                 onChange={(e) => handleFilterChange('categoryId', e.target.value)}
-                className="rounded-2xl border border-slate-800 px-4 py-3 outline-none"
+                className="rounded-2xl border border-slate-300 px-4 py-3 outline-none"
               >
-                <option value="">همه خدمات</option>
+                <option value="">همه دسته‌ها</option>
                 {categories.map((item) => (
                   <option key={item.id} value={String(item.id)}>
                     {item.name}
@@ -361,9 +313,35 @@ function Listings() {
               </select>
 
               <select
+                value={filters.country}
+                onChange={(e) => handleFilterChange('country', e.target.value)}
+                className="rounded-2xl border border-slate-300 px-4 py-3 outline-none"
+              >
+                <option value="">همه کشورها</option>
+                {countries.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={filters.city}
+                onChange={(e) => handleFilterChange('city', e.target.value)}
+                className="rounded-2xl border border-slate-300 px-4 py-3 outline-none"
+              >
+                <option value="">همه شهرها</option>
+                {cities.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+
+              <select
                 value={filters.sortBy}
                 onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                className="rounded-2xl border border-slate-800 px-4 py-3 outline-none"
+                className="rounded-2xl border border-slate-300 px-4 py-3 outline-none"
               >
                 <option value="newest">جدیدترین‌ها</option>
                 <option value="top">بهترین‌ها</option>
@@ -387,41 +365,66 @@ function Listings() {
                   نوع خدمت: {category?.name || 'انتخاب شده'}
                 </span>
               )}
-
               {filters.country && (
                 <span className="rounded-full bg-gray-100 px-4 py-2">
                   کشور: {filters.country}
                 </span>
               )}
-
               {filters.city && (
                 <span className="rounded-full bg-gray-100 px-4 py-2">
                   شهر: {filters.city}
                 </span>
               )}
-
               {!filters.categoryId && !filters.country && !filters.city && (
-                <span className="rounded-full bg-gray-100 px-4 py-2">
-                  همه خدمات
-                </span>
+                <span className="rounded-full bg-gray-100 px-4 py-2">همه خدمات</span>
               )}
             </div>
+          </div>
+
+          <div className="rounded-[28px] bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-2xl font-bold text-slate-800">نتایج جستجو</h2>
+            <p className="mt-3 leading-8 text-slate-600">
+              {businesses.length > 0
+                ? `در حال حاضر ${businesses.length} کسب‌وکار ثبت‌شده در این بخش نمایش داده می‌شود.`
+                : 'هنوز موردی با این فیلترها پیدا نشده است. فیلترها را تغییر بده یا دسته دیگری را انتخاب کن.'}
+            </p>
           </div>
 
           {loading && <div>در حال بارگذاری کسب‌وکارها...</div>}
           {error && <div className="text-red-500">{error}</div>}
 
-          {!loading && !error && businesses.length === 0 && (
-            <div className="rounded-2xl bg-white p-6 shadow">موردی پیدا نشد</div>
-          )}
+          {!loading && !error && businesses.length === 0 ? (
+            <div className="rounded-[28px] bg-white p-8 shadow-sm">
+              <h3 className="text-xl font-bold text-slate-800">موردی پیدا نشد</h3>
+              <p className="mt-3 leading-8 text-slate-600">
+                برای پیدا کردن نتایج بیشتر، کشور، شهر یا نوع خدمت را تغییر بده.
+                همچنین می‌توانی به صفحه دسته‌بندی‌ها یا صفحه اصلی برگردی و مسیر
+                دیگری را امتحان کنی.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  to="/"
+                  className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-slate-800"
+                >
+                  بازگشت به صفحه اصلی
+                </Link>
+                <Link
+                  to="/blogs"
+                  className="rounded-2xl border border-slate-300 px-5 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                >
+                  مطالعه بلاگ‌ها
+                </Link>
+              </div>
+            </div>
+          ) : null}
 
-          {!loading && !error && businesses.length > 0 && (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {!loading && !error && businesses.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
               {businesses.map((business) => (
                 <BusinessCard key={business.id} business={business} />
               ))}
             </div>
-          )}
+          ) : null}
         </div>
       </section>
     </Layout>
