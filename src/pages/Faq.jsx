@@ -5,7 +5,8 @@ import AccordionItem from '../components/common/AccordionItem'
 import SidebarInfoBlocks from '../components/common/SidebarInfoBlocks'
 import Seo from '../components/common/Seo'
 import { getBusinesses, getFeaturedBusinesses } from '../services/supabase/businesses.api'
-
+import JsonLd from '../components/seo/JsonLd'
+import { buildFaqSchema } from '../utils/schema'
 const faqItems = [
   {
     question: 'چطور می‌توانم خدمات خودم را در نزدیکو ثبت کنم؟',
@@ -33,7 +34,7 @@ const faqItems = [
       'اگر بعداً نیاز به ویرایش اطلاعات داشتید، باید از طریق ارتباط با پشتیبانی یا پنل مدیریت هماهنگ شود تا اطلاعات جدید ثبت گردد.',
   },
 ]
-
+const faqSchema = buildFaqSchema(faqItems)
 function Faq() {
   const [featuredServices, setFeaturedServices] = useState([])
   const [latestServices, setLatestServices] = useState([])
@@ -58,6 +59,7 @@ function Faq() {
 
   return (
     <Layout>
+      <JsonLd data={faqSchema} />
       <Seo
         title="سوالات متداول | نزدیکو"
         description="پاسخ سوالات متداول کاربران نزدیکو درباره ثبت خدمات، تایید کسب‌وکار، آپلود تصاویر، اطلاعات تماس و نمایش صفحات خدمات."

@@ -16,6 +16,13 @@ import {
   createReview,
   getReviewsByBusinessId,
 } from '../services/supabase/reviews.api'
+import JsonLd from '../components/seo/JsonLd'
+import {
+  buildBusinessSchema,
+  buildBreadcrumbSchema,
+  buildFaqSchema,
+  buildReviewsSchema,
+} from '../utils/schema'
 
 function BusinessDetails() {
   const { slug } = useParams()
@@ -134,7 +141,23 @@ function BusinessDetails() {
       },
     })
   }, [business, seoEntry])
+const businessSchema = useMemo(() => {
+  return buildBusinessSchema(business)
+}, [business])
 
+const breadcrumbSchema = useMemo(() => {
+  if (!business) return null
+
+  return buildBreadcrumbSchema([
+    { name: 'خانه', url: '/' },
+    { name: 'خدمات', url: '/listings' },
+    { name: business.title, url: `/business/${business.slug}` },
+  ])
+}, [business])
+
+const reviewsSchema = useMemo(() => {
+  return buildReviewsSchema(reviews || [])
+}, [reviews])
   const localBusinessSchema = useMemo(() => {
     if (!business) return null
 
@@ -218,6 +241,11 @@ function BusinessDetails() {
           <StructuredData
             data={seoEntry?.custom_schema_json || localBusinessSchema}
           />
+          <JsonLd data={businessSchema} />
+              <JsonLd data={breadcrumbSchema} />
+              {reviewsSchema?.map((item, i) => (
+                <JsonLd key={i} data={item} />
+              ))}
         </>
       ) : null}
 

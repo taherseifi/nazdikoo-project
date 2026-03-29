@@ -6,7 +6,11 @@ import StructuredData from '../components/common/StructuredData'
 import PageHero from '../components/common/PageHero'
 import BlogContentViewer from '../components/blog/BlogContentViewer'
 import { CalendarDays } from 'lucide-react'
-
+import JsonLd from '../components/seo/JsonLd'
+import {
+  buildBlogSchema,
+  buildBreadcrumbSchema,
+} from '../utils/schema'
 import { getSeoEntry } from '../services/supabase/seo.api'
 import { buildSeoPayload } from '../utils/seo/buildSeoPayload'
 import { getCanonicalUrl } from '../utils/seo/getCanonicalUrl'
@@ -143,6 +147,19 @@ function BlogDetails() {
     })
   }, [blog, seoEntry])
 
+const blogSchema = useMemo(() => {
+  return buildBlogSchema(blog)
+}, [blog])
+
+const breadcrumbSchema = useMemo(() => {
+  if (!blog) return null
+
+  return buildBreadcrumbSchema([
+    { name: 'خانه', url: '/' },
+    { name: 'بلاگ', url: '/blogs' },
+    { name: blog.title, url: `/blogs/${blog.slug}` },
+  ])
+}, [blog])
   const articleSchema = useMemo(() => {
     if (!blog) return null
 
@@ -201,6 +218,8 @@ function BlogDetails() {
             type="article"
           />
           <StructuredData data={seoEntry?.custom_schema_json || articleSchema} />
+          <JsonLd data={blogSchema} />
+          <JsonLd data={breadcrumbSchema} />
         </>
       ) : null}
 
