@@ -55,8 +55,8 @@ function StatsSection() {
       id: 4,
       value: stats.citiesCount,
       label: 'شهر تحت پوشش',
-      icon: <MapPin className="h-8 w-8 text-slate-600" />,
-      bg: 'bg-slate-100',
+      icon: <MapPin className="h-8 w-8 text-slate-800" />,
+      bg: 'bg-slate-200',
     },
   ]
 
@@ -73,7 +73,7 @@ function StatsSection() {
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center gap-5 rounded-3xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              className="flex items-center gap-5 rounded-3xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md border border-slate-300"
             >
               <div
                 className={`flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl ${item.bg}`}
