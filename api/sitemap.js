@@ -1,6 +1,6 @@
 const SITE_URL = (process.env.SITE_URL || 'https://nazdikoo-project.vercel.app').replace(/\/$/, '')
-const SUPABASE_URL = (process.env.SUPABASE_URL || '').replace(/\/$/, '')
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || ''
+const SUPABASE_URL = (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '').replace(/\/$/, '')
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || ''
 
 function escapeXml(value = '') {
   return String(value)
@@ -43,7 +43,7 @@ async function fetchSupabase(path) {
 
   if (!response.ok) {
     const text = await response.text()
-    throw new Error(`Supabase error: ${response.status} - ${text}`)
+    throw new Error(`Supabase error on ${path}: ${response.status} - ${text}`)
   }
 
   return response.json()
@@ -157,7 +157,9 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400')
     return res.status(200).send(xml)
   } catch (error) {
-    console.error('Sitemap generation failed:', error)
-    return res.status(500).send('Failed to generate sitemap')
-  }
+  console.error('Sitemap generation failed:', error)
+  return res.status(500).send(
+    `Failed to generate sitemap: ${error.message || String(error)}`
+  )
+}
 }
