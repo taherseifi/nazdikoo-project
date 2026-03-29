@@ -13,25 +13,25 @@ const guideSections = [
     step: 'مرحله 1',
     title: 'انتخاب نوع کسب‌وکار و زیرشاخه دقیق',
     text: 'در فرم ثبت خدمات، ابتدا دسته اصلی کسب‌وکار را انتخاب کن و بعد از آن زیرشاخه دقیق شغل خودت را مشخص کن تا کاربران راحت‌تر تو را پیدا کنند.',
-    image: '/images/guide-placeholder-1.jpg',
+    image: '/images/Business-Category-Niche.webp',
   },
   {
     step: 'مرحله 2',
     title: 'وارد کردن اطلاعات تماس و آدرس دقیق',
     text: 'شماره تماس، واتساپ، ایمیل، کشور، شهر، منطقه و آدرس را با دقت وارد کن. هرچه اطلاعات کامل‌تر باشد، اعتماد کاربر بیشتر می‌شود.',
-    image: '/images/guide-placeholder-2.jpg',
+    image: '/images/Contact-Info-Address.webp',
   },
   {
     step: 'مرحله 3',
     title: 'آپلود عکس کاور و گالری',
     text: 'یک تصویر کاور مناسب و حداقل ۳ عکس برای گالری قرار بده تا صفحه خدماتت حرفه‌ای‌تر دیده شود و کاربر بهتر با کسب‌وکار تو آشنا شود.',
-    image: '/images/guide-placeholder-3.jpg',
+    image: '/images/Upload-Cover-Gallery.webp',
   },
   {
     step: 'مرحله 4',
     title: 'انتخاب موقعیت روی نقشه',
     text: 'روی نقشه، محل دقیق کسب‌وکار را مشخص کن تا در صفحه جزئیات خدمت، موقعیت تو برای کاربران نمایش داده شود.',
-    image: '/images/guide-placeholder-4.jpg',
+    image: '/images/Select-Location-Map.webp',
   },
 ]
 
@@ -134,7 +134,7 @@ function GuideSubmitBusiness() {
                   <img
                     src={section.image}
                     alt={section.title}
-                    className="h-72 w-full rounded-[28px] object-cover"
+                    className=" w-full rounded-[28px] object-cover"
                   />
                 </div>
               </div>
